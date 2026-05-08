@@ -104,7 +104,7 @@ function PlayState:update(dt)
         end
     end
 
-    -- Continuous input checking; if space is maintained pressed, make bird jump several times in a row
+    -- Continuous input checking; if space or mouse button is maintained pressed, make bird jump several times in a row
     if love.keyboard.isDown('space') then
         love.keyboard.keysPressed['space'] = true
     end
