@@ -21,12 +21,17 @@ BIRD_HEIGHT = 24
 local MIN_GAP_HEIGHT = 75
 local START_GAP_HEIGHT = 140
 
+-- spawn interval for new pipes
+local MIN_PIPE_SPAWN_INTERVAL = 1.7
+local MAX_PIPE_SPAWN_INTERVAL = 4
+
 function PlayState:init()
     self.bird = Bird()
     self.pipePairs = {}
     self.timer = 0
     self.t = 0
     self.score = 0
+    self.spawnInterval = math.random(MIN_PIPE_SPAWN_INTERVAL, MAX_PIPE_SPAWN_INTERVAL)
 
     -- initialize our last recorded Y value for a gap placement to base other gaps off of
     self.lastY = -PIPE_HEIGHT + math.random(80) + 20
@@ -38,7 +43,7 @@ function PlayState:update(dt)
     self.t = self.t + dt
 
     -- spawn a new pipe pair every second and a half
-    if self.timer > 2 then
+    if self.timer > self.spawnInterval then
         -- Randomize the gap height, but make sure it's not too small as the player progresses. Gap makes smaller as games improves
         local gap = START_GAP_HEIGHT - self.t < MIN_GAP_HEIGHT and math.random(MIN_GAP_HEIGHT, MIN_GAP_HEIGHT + 20) or
             math.random(START_GAP_HEIGHT - self.t, START_GAP_HEIGHT + 30 - self.t)
@@ -56,6 +61,7 @@ function PlayState:update(dt)
 
         -- reset timer
         self.timer = 0
+        self.spawnInterval = math.random(MIN_PIPE_SPAWN_INTERVAL, MAX_PIPE_SPAWN_INTERVAL)
     end
 
     -- for every pair of pipes..
@@ -91,9 +97,9 @@ function PlayState:update(dt)
                 gSounds['explosion']:play()
                 gSounds['hurt']:play()
 
-                gStateMachine:change('score', {
-                    score = self.score
-                })
+                -- gStateMachine:change('score', {
+                --    score = self.score
+               --  })
             end
         end
     end
