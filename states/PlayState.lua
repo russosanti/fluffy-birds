@@ -31,7 +31,7 @@ function PlayState:init()
     self.timer = 0
     self.t = 0
     self.score = 0
-    self.spawnInterval = math.random(MIN_PIPE_SPAWN_INTERVAL, MAX_PIPE_SPAWN_INTERVAL)
+    self.spawnInterval = 2 -- init at 2 secs
 
     -- initialize our last recorded Y value for a gap placement to base other gaps off of
     self.lastY = -PIPE_HEIGHT + math.random(80) + 20
@@ -97,9 +97,9 @@ function PlayState:update(dt)
                 gSounds['explosion']:play()
                 gSounds['hurt']:play()
 
-                -- gStateMachine:change('score', {
-                --    score = self.score
-               --  })
+                gStateMachine:change('score', {
+                    score = self.score
+              })
             end
         end
     end

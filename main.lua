@@ -91,7 +91,13 @@ function love.load()
         ['background'] = love.graphics.newImage('background.png'),
         ['ground'] = love.graphics.newImage('ground.png'),
         ['bird'] = love.graphics.newImage('bird.png'),
-        ['pipe'] = love.graphics.newImage('pipe.png')
+        ['pipe'] = love.graphics.newImage('pipe.png'),
+        ['copper'] = love.graphics.newImage('copper.png'),
+        ['steel'] = love.graphics.newImage('steel.png'),
+        ['bronze'] = love.graphics.newImage('bronze.png'),
+        ['silver'] = love.graphics.newImage('silver.png'),
+        ['gold'] = love.graphics.newImage('gold.png'),
+        ['god'] = love.graphics.newImage('god.png')
     }
 
     -- initialize our table of sounds
