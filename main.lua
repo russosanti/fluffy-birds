@@ -45,6 +45,10 @@ require 'Bird'
 require 'Pipe'
 require 'PipePair'
 
+if os.getenv("LOCAL_LUA_DEBUGGER_VSCODE") == "1" then
+  require("lldebugger").start()
+end
+
 -- physical screen dimensions
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720

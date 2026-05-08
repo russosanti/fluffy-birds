@@ -45,11 +45,13 @@ function Bird:update(dt)
     self.dy = self.dy + GRAVITY * dt
 
     if love.keyboard.wasPressed('space') or love.mouse.wasPressed(1) then
-        self.dy = -250
+        self.dy = -200
         gSounds['jump']:play()
     end
 
-    self.y = math.min(self.y + self.dy * dt, VIRTUAL_HEIGHT - self.height - GROUND_HEIGHT)
+    -- Constrain bird to the bounds of the screen, with the ground height taken into consideration. You dont loose if you hit the ceiling nor the ground
+    self.y = math.max(0,
+    math.min(self.y + self.dy * dt, VIRTUAL_HEIGHT - self.height - GROUND_HEIGHT))
 end
 
 function Bird:render()

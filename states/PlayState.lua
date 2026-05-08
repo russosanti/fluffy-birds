@@ -17,10 +17,15 @@ PIPE_HEIGHT = 288
 BIRD_WIDTH = 38
 BIRD_HEIGHT = 24
 
+-- size of the gap between pipes
+local MIN_GAP_HEIGHT = 75
+local START_GAP_HEIGHT = 140
+
 function PlayState:init()
     self.bird = Bird()
     self.pipePairs = {}
     self.timer = 0
+    self.t = 0
     self.score = 0
 
     -- initialize our last recorded Y value for a gap placement to base other gaps off of
@@ -30,18 +35,24 @@ end
 function PlayState:update(dt)
     -- update timer for pipe spawning
     self.timer = self.timer + dt
+    self.t = self.t + dt
 
     -- spawn a new pipe pair every second and a half
     if self.timer > 2 then
+        -- Randomize the gap height, but make sure it's not too small as the player progresses. Gap makes smaller as games improves
+        local gap = START_GAP_HEIGHT - self.t < MIN_GAP_HEIGHT and math.random(MIN_GAP_HEIGHT, MIN_GAP_HEIGHT + 20) or
+            math.random(START_GAP_HEIGHT - self.t, START_GAP_HEIGHT + 30 - self.t)
+
+        
         -- modify the last Y coordinate we placed so pipe gaps aren't too far apart
         -- no higher than 10 pixels below the top edge of the screen,
-        -- and no lower than a gap length (90 pixels) from the bottom
+        -- and no lower than a gap length from the bottom added ground to consider that
         local y = math.max(-PIPE_HEIGHT + 10,
-            math.min(self.lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 90 - PIPE_HEIGHT))
+            math.min(self.lastY + math.random(-20, 20), VIRTUAL_HEIGHT - gap - PIPE_HEIGHT - GROUND_HEIGHT))
         self.lastY = y
 
         -- add a new pipe pair at the end of the screen at our new Y
-        table.insert(self.pipePairs, PipePair(y))
+        table.insert(self.pipePairs, PipePair(y, gap))
 
         -- reset timer
         self.timer = 0
@@ -85,6 +96,14 @@ function PlayState:update(dt)
                 })
             end
         end
+    end
+
+    -- Continuous input checking; if space is maintained pressed, make bird jump several times in a row
+    if love.keyboard.isDown('space') then
+        love.keyboard.keysPressed['space'] = true
+    end
+    if love.mouse.isDown(1) then
+        love.mouse.buttonsPressed[1] = true
     end
 
     -- update bird based on gravity and input
