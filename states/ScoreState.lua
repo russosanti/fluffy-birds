@@ -11,12 +11,12 @@
 ScoreState = Class{__includes = BaseState}
 
 local medals = {
-    { score = 6, medal = 'god' },
-    { score = 5, medal = 'gold' },
-    { score = 4, medal = 'silver' },
-    { score = 3, medal = 'bronze' },
-    { score = 2, medal = 'steel' },
-    { score = 1, medal = 'copper' }
+    { score = 70, medal = 'god' },
+    { score = 50, medal = 'gold' },
+    { score = 40, medal = 'silver' },
+    { score = 25, medal = 'bronze' },
+    { score = 10, medal = 'steel' },
+    { score = 5, medal = 'copper' }
 }
 
 --[[
