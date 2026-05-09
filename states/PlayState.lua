@@ -32,12 +32,29 @@ function PlayState:init()
     self.t = 0
     self.score = 0
     self.spawnInterval = 2 -- init at 2 secs
+    self.paused = false
 
     -- initialize our last recorded Y value for a gap placement to base other gaps off of
     self.lastY = -PIPE_HEIGHT + math.random(80) + 20
 end
 
 function PlayState:update(dt)
+    if love.keyboard.wasPressed('p') then
+        self.paused = not self.paused
+        scrolling = not self.paused
+
+        if self.paused then
+            gSounds['music']:pause()
+            gSounds['pause']:play()
+        else
+            gSounds['music']:play()
+        end
+    end
+
+    if self.paused then
+        return
+    end
+
     -- update timer for pipe spawning
     self.timer = self.timer + dt
     self.t = self.t + dt
@@ -135,6 +152,28 @@ function PlayState:render()
     love.graphics.print('Score: ' .. tostring(self.score), 8, 8)
 
     self.bird:render()
+
+    if self.paused then
+        self:renderPause()
+    end
+end
+
+function PlayState:renderPause()
+
+    -- grey transparent overlay
+    love.graphics.setColor(0, 0, 0, 0.5)
+    love.graphics.rectangle('fill', 0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT)
+    
+    -- reset color so next draws are normal
+    love.graphics.setColor(1, 1, 1, 1)
+    -- Draw pause image if available, otherwise draw "II" text
+    if gTextures['pause'] then
+        local pause = gTextures['pause']
+        love.graphics.draw(pause, VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, 0, 0.1, 0.1, pause:getWidth() / 2, pause:getHeight() / 2)
+    else
+        love.graphics.setFont(hugeFont)
+        love.graphics.printf('II', 0, VIRTUAL_HEIGHT / 2 - 28, VIRTUAL_WIDTH, 'center')
+    end
 end
 
 --[[
