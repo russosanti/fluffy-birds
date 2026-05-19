@@ -1,6 +1,6 @@
 # Fluffy Bird
 
-A Flappy Bird-inspired game developed in Lua using LÖVE2D as part of Harvard's CS50 Game Development course.
+A Flappy Bird-inspired game developed in Lua using LÖVE2D.
 
 ## Overview
 
